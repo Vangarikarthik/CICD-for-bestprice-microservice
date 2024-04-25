@@ -1,0 +1,242 @@
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f7eb; /* Light gray background */
+    color: #333; /* Dark text color */
+  }
+  
+  h1 {
+    font-size: 2.5rem; /* Larger heading font size */
+    margin: 0;
+    padding: 20px 0; /* Add some padding above and below the heading */
+    text-align: center;
+    color: #fefefe; /* White heading text color */
+    background-color: #1f6dc1; /* Blue background color */
+  }
+  
+  /* Main content */
+  main {
+    padding: 20px;
+    position: relative; /* Ensure relative positioning for child elements */
+  }
+  
+  /* Product selector */
+  .product-selector {
+    text-align: center;
+  }
+  
+  .product-selector h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem; /* Larger font size for product selector title */
+    color: #007bff; /* Blue color */
+  }
+  
+  .product-selector button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1.2rem; /* Larger font size for buttons */
+    background-color: #0b6fda; /* Blue button background color */
+    color: #eecaca; /* White button text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for button background color */
+  }
+  
+  .product-selector button:hover {
+    background-color: #e0e2c4; /* Darker blue on hover */
+  }
+  
+  .options-container {
+    position: relative;
+  }
+  
+  .menu-bar {
+    margin-top: 35px;
+    background-color: #e8f5f4;
+    display: flex; /* Make the menu items appear in a row */
+    justify-content: space-between; /* Distribute items evenly along the main axis */
+    border: 1px solid #8b989a; /* Add border */
+    border-top-width: 1px; /* Increase top border width */
+    border-bottom-width: 1px; /* Increase bottom border width */
+    border-radius: 10px; /* Add border radius to create rounded corners */
+    padding: 8px; /* Add padding to space items from the border */
+  }
+  
+  .menu-item {
+    padding: 8px 16px; /* Add padding to menu items */
+    border-right: 2px solid #333; /* Add right border to separate items */
+  }
+  
+  .menu-item:last-child {
+    border-right: none; /* Remove right border for the last menu item */
+  }
+  
+  /* Styles for select box */
+  select {
+    padding: 6px 12px; /* Add padding to select box */
+    border: 1px solid #ccc; /* Add border to select box */
+    border-radius: 5px; /* Add border radius to select box */
+  }
+  
+  /* Styles for buttons */
+  .button {
+    padding: 6px 12px; /* Add padding to buttons */
+    margin-left: 8px; /* Add margin between buttons */
+    border: 1px solid #ccc; /* Add border to buttons */
+    border-radius: 5px; /* Add border radius to buttons */
+    background-color: #f0f0f0; /* Button background color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  /* Styles for clear button */
+  .clear-button {
+    padding: 6px 12px; /* Add padding to clear button */
+    margin-left: 8px; /* Add margin between clear button and other buttons */
+    border: 1px solid #ccc; /* Add border to clear button */
+    border-radius: 5px; /* Add border radius to clear button */
+    background-color: #f0f0f0; /* Clear button background color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  
+  /* Mobile Options heading */
+  .mobile-options-heading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #008cff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Laptop Options heading */
+  .laptop-options-heading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4a4ffb;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Show heading */
+  .show-heading {
+    opacity: 1;
+  }
+  
+  /* Options container */
+  .options-container {
+    background-color: #f3dfdf; /* White background */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle box shadow */
+    margin-top: 5px;
+  }
+  
+  .options-container h2 {
+    margin-top: 0;
+    font-size: 1.5rem; /* Larger font size for options container title */
+    color: #333; /* Dark text color */
+  }
+  
+  /* Switch button */
+  .switch-button {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 0.8rem; /* Larger font size for switch button */
+    background-color: #548190; /* Blue button background color */
+    color: hwb(36 63% 2%); /* White button text color */
+    border-color: #859db8;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for button background color */
+    z-index: 2;
+  }
+  
+  .switch-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Transitions */
+  .fade-enter {
+    opacity: 0;
+  }
+  
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+  
+  .fade-exit {
+    opacity: 1;
+  }
+  
+  .fade-exit-active {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  /* Additional styles */
+  
+  /* Header */
+  header {
+    padding: 20px;
+  }
+  
+  /* Container */
+  .App {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Responsive styles */
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .product-selector h2 {
+      font-size: 1.2rem;
+    }
+    
+    .product-selector button {
+      font-size: 1rem;
+    }
+    
+    .options-container {
+      padding: 10px;
+    }
+    
+    .switch-button {
+      top: 10px;
+      right: 10px;
+      padding: 8px 16px;
+      font-size: 1rem;
+    }
+  }
+  
+  
+  
+  
+  
