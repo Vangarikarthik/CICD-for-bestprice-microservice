@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         IMAGE_TAG1 = "karthikvangari/bestprice:latest"
-        IMAGE_TAG2 = "karthikvangari/mobile:latest"
-        IMAGE_TAG3 = "karthikvangari/laptop:latest"
+        IMAGE_TAG2 = "karthikvangari/mobile-microservice:latest"
+        IMAGE_TAG3 = "karthikvangari/laptop-microservice:latest"
         CONTAINER_NAME1="bestprice-container"
         CONTAINER_NAME2="mobile-container"
         CONTAINER_NAME3="laptop-container"
