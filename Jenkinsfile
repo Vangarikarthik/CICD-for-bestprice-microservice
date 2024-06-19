@@ -62,6 +62,7 @@ pipeline {
                         sh 'kubectl apply -f bestprice-deployment.yaml'
                         sh 'kubectl apply -f mobile-ms-deployment.yaml'
                         sh 'kubectl apply -f laptop-ms-deployment.yaml'
+                        sh 'kubectl apply -f mongodb-deployment.yaml'
 
                   
                 }
