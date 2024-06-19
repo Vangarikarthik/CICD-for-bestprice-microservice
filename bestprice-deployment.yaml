@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bestprice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bestprice
+  template:
+    metadata:
+      labels:
+        app: bestprice
+    spec:
+      containers:
+      - name: bestprice
+        image: karthikvangari/bestprice:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REACT_APP_LAPTOP_SERVICE_URL
+          value: "http://192.168.49.2:30820/laptops"
+        - name: REACT_APP_MOBILE_SERVICE_URL
+          value: "http://192.168.49.2:31556/mobiles"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bestprice-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: bestprice
+

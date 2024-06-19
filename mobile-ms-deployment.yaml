@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mobile-microservice
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mobile-microservice
+  template:
+    metadata:
+      labels:
+        app: mobile-microservice
+    spec:
+      containers:
+      - name: mobile-microservice
+        image: karthikvangari/mobile-microservice:latest
+        ports:
+        - containerPort: 5001
+        env:
+        - name: MONGO_URI
+          value: mongodb://mongodb-service:27017/mobiles
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobile-microservice-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 5001
+    targetPort: 5001
+  selector:
+    app: mobile-microservice
+

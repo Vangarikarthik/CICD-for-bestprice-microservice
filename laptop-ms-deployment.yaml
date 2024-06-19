@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laptop-microservice
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laptop-microservice
+  template:
+    metadata:
+      labels:
+        app: laptop-microservice
+    spec:
+      containers:
+      - name: laptop-microservice
+        image: karthikvangari/laptop-microservice:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          value: mongodb://mongodb-service:27017/laptops
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laptop-microservice-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 5000
+    targetPort: 5000
+  selector:
+    app: laptop-microservice
+

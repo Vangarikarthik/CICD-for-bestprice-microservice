@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            height: 700px;
+            width: 600px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #000000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ffffff;
+            border-radius: 5px;
+        }
+
+        #send-button, #mic-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #000000;
+            border-radius: 5px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px 0;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message.bot {
+            flex-direction: row;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #000000;
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+
+        .text {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+
+        .user .text {
+            background-color: #ffffff;
+            border: 1px solid rgb(255, 255, 255);
+        }
+
+        .bot .text {
+            background-color: #e1e1e1;
+            border: 0.1px solid rgb(255, 255, 255);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            AI - Interaction
+        </div>
+        <div id="chat-box" class="chat-box"></div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <div id="send-button" onclick="sendMessage()">
+                <img src="https://img.icons8.com/?size=100&id=13842&format=png&color=000000" alt="Send" width="20" height="20">
+            </div>
+            <div id="mic-button" onclick="startSpeechRecognition()">
+                <img src="https://img.icons8.com/?size=100&id=VCz4i9SJoX0U&format=png&color=000000" alt="Mic" width="20" height="20">
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        let chatLog = [];
+
+        function sendMessage() {
+            const apiKey = 'AIzaSyC6-_BcgmIFG4lfDeQcFJuSIUA2K2xooEg';
+            const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+
+            if (message !== "") {
+                addMessageToChatBox(message, 'user');
+                chatLog.push({ sender: 'user', message: message });
+                
+                userInput.value = '';
+
+                const requestBody = {
+                    contents: [
+                        {
+                            parts: [
+                                {
+                                    text: message
+                                }
+                            ]
+                        }
+                    ],
+                    generationConfig: {
+                        response_mime_type: "application/json"
+                    }
+                };
+
+                fetch(`${apiUrl}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botMessage = generateBotResponse(data);
+                    addMessageToChatBox(botMessage, 'bot');
+                    chatLog.push({ sender: 'bot', message: botMessage });
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            if (message === 'hi' || message === 'hello') {
+                const botMessage = "Hi 👋, There! How Can I Assist You Today ?";
+                addMessageToChatBox(botMessage, 'bot');
+                chatLog.push({ sender: 'bot', message: botMessage });
+                userInput.value = '';
+            }
+        }
+
+        function saveChatToDatabase() {
+            const xhr = new XMLHttpRequest();
+            const url = 'save_chat.php'; // Change to the appropriate PHP script URL
+            const params = chatLog.map(log => `userInput=${encodeURIComponent(log.message)}&botResponse=${encodeURIComponent(log.message)}`).join('&');
+            
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('Data saved to database successfully');
+                } else {
+                    console.error('Error saving data to database:', xhr.responseText);
+                }
+            };
+            
+            xhr.send(params);
+        }
+
+        function generateBotResponse(data) {
+            let generatedContent = data.candidates[0].content.parts[0].text;
+
+            const keywordsToFilter = ['name', 'essay', 'president']; // Add more keywords as needed
+
+            keywordsToFilter.forEach(keyword => {
+                const regex = new RegExp('\\b' + keyword + '\\b', 'gi'); // Case-insensitive whole word match
+                generatedContent = generatedContent.replace(regex, '');
+            });
+
+            const filteredContent = generatedContent.replace(/[^\w\s]/gi, ''); 
+            
+            return filteredContent.trim();
+        }
+
+        function addMessageToChatBox(message, sender) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            
+            const imgElement = document.createElement('img');
+            imgElement.src = sender === 'user' ? 'https://img.icons8.com/?size=100&id=fUUEbUbXhzOA&format=png&color=000000' : 'https://img.icons8.com/?size=100&id=NspKf9KAs70I&format=png&color=000000';
+            imgElement.classList.add('avatar');
+            
+            const textElement = document.createElement('div');
+            textElement.classList.add('text');
+            textElement.textContent = message;
+
+            messageElement.appendChild(imgElement);
+            messageElement.appendChild(textElement);
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function startSpeechRecognition() {
+            const recognition = new window.webkitSpeechRecognition();
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                const userInput = document.getElementById('user-input');
+                userInput.value = event.results[0][0].transcript;
+                sendMessage(); // Send message after speech recognition
+            };
+
+            recognition.start();
+        }
+    </script>
+</body>
+</html>
