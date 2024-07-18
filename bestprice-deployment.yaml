@@ -19,9 +19,9 @@ spec:
         - containerPort: 3000
         env:
         - name: REACT_APP_LAPTOP_SERVICE_URL
-          value: "http://192.168.49.2:32409/laptops"
+          value: "http://192.168.49.2:31888/laptops"
         - name: REACT_APP_MOBILE_SERVICE_URL
-          value: "http://192.168.49.2:31840/mobiles"
+          value: "http://192.168.49.2:30650/mobiles"
 
 ---
 apiVersion: v1
