@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    
     environment {
         IMAGE_TAG1 = "karthikvangari/bestprice:latest"
         IMAGE_TAG2 = "karthikvangari/mobile-microservice:latest"
